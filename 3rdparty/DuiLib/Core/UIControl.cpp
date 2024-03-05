@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 
-namespace DuiLib {
+namespace DuiLib
+{
 IMPLEMENT_DUICONTROL(CControlUI)
 
 CControlUI::CControlUI()
@@ -58,9 +59,7 @@ CPaintManagerUI* CControlUI::GetManager() const
     return m_pManager;
 }
 
-void CControlUI::SetManager(CPaintManagerUI* pManager,
-                            CControlUI* pParent,
-                            bool bInit)
+void CControlUI::SetManager(CPaintManagerUI* pManager, CControlUI* pParent, bool bInit)
 {
     m_pManager = pManager;
     m_pParent = pParent;
@@ -341,13 +340,8 @@ void CControlUI::SetBorderRound(SIZE cxyRound)
 
 bool CControlUI::DrawImage(HDC hDC, LPCTSTR pStrImage, LPCTSTR pStrModify)
 {
-    return CRenderEngine::DrawImageString(hDC,
-                                          m_pManager,
-                                          m_rcItem,
-                                          m_rcPaint,
-                                          pStrImage,
-                                          pStrModify,
-                                          m_instance);
+    return CRenderEngine::DrawImageString(
+        hDC, m_pManager, m_rcItem, m_rcPaint, pStrImage, pStrModify, m_instance);
 }
 
 const RECT& CControlUI::GetPos() const
@@ -696,7 +690,6 @@ void CControlUI::SetTag(UINT_PTR pTag)
 
 bool CControlUI::IsVisible() const
 {
-
     return m_bVisible && m_bInternVisible;
 }
 
@@ -786,17 +779,15 @@ void CControlUI::SetFloat(bool bFloat)
     NeedParentUpdate();
 }
 
-CControlUI*
-CControlUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
+CControlUI* CControlUI::FindControl(FINDCONTROLPROC Proc, LPVOID pData, UINT uFlags)
 {
     if ((uFlags & UIFIND_VISIBLE) != 0 && !IsVisible())
         return nullptr;
     if ((uFlags & UIFIND_ENABLED) != 0 && !IsEnabled())
         return nullptr;
-    if ((uFlags & UIFIND_HITTEST) != 0 &&
-        (!m_bMouseEnabled ||
-         !::PtInRect(&m_rcItem, *static_cast<LPPOINT>(pData))))
-         return nullptr;
+    if ((uFlags & UIFIND_HITTEST) != 0
+        && (!m_bMouseEnabled || !::PtInRect(&m_rcItem, *static_cast<LPPOINT>(pData))))
+        return nullptr;
     return Proc(this, pData);
 }
 
@@ -911,16 +902,14 @@ void CControlUI::DoEvent(TEventUI& event)
     }
     if (event.Type == UIEVENT_TIMER)
     {
-        m_pManager->SendNotify(
-            this, DUI_MSGTYPE_TIMER, event.wParam, event.lParam);
+        m_pManager->SendNotify(this, DUI_MSGTYPE_TIMER, event.wParam, event.lParam);
         return;
     }
     if (event.Type == UIEVENT_CONTEXTMENU)
     {
         if (IsContextMenuUsed())
         {
-            m_pManager->SendNotify(
-                this, DUI_MSGTYPE_MENU, event.wParam, event.lParam);
+            m_pManager->SendNotify(this, DUI_MSGTYPE_MENU, event.wParam, event.lParam);
             return;
         }
     }
@@ -959,8 +948,7 @@ CDuiString CControlUI::GetVirtualWnd() const
 
 void CControlUI::AddCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr)
 {
-    if (pstrName == NULL || pstrName[0] == _T('\0') || pstrAttr == NULL ||
-        pstrAttr[0] == _T('\0'))
+    if (pstrName == NULL || pstrName[0] == _T('\0') || pstrAttr == NULL || pstrAttr[0] == _T('\0'))
         return;
 
     if (m_mCustomAttrHash.Find(pstrName) == NULL)
@@ -977,8 +965,7 @@ LPCTSTR CControlUI::GetCustomAttribute(LPCTSTR pstrName) const
 {
     if (pstrName == NULL || pstrName[0] == _T('\0'))
         return nullptr;
-    CDuiString* pCostomAttr =
-        static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
+    CDuiString* pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
     if (pCostomAttr)
         return pCostomAttr->GetData();
     return nullptr;
@@ -988,8 +975,7 @@ bool CControlUI::RemoveCustomAttribute(LPCTSTR pstrName)
 {
     if (pstrName == NULL || pstrName[0] == _T('\0'))
         return false;
-    CDuiString* pCostomAttr =
-        static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
+    CDuiString* pCostomAttr = static_cast<CDuiString*>(m_mCustomAttrHash.Find(pstrName));
     if (!pCostomAttr)
         return false;
 
@@ -1080,8 +1066,7 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
             while (*pstrValue == _T(',') || *pstrValue == _T(' '))
                 pstrValue = ::CharNext(pstrValue);
 
-            while (*pstrValue != _T('\0') && *pstrValue != _T(',') &&
-                   *pstrValue != _T(' '))
+            while (*pstrValue != _T('\0') && *pstrValue != _T(',') && *pstrValue != _T(' '))
             {
                 LPTSTR pstrTemp = ::CharNext(pstrValue);
                 while (pstrValue < pstrTemp)
@@ -1142,8 +1127,7 @@ void CControlUI::SetAttribute(LPCTSTR pstrName, LPCTSTR pstrValue)
     }
     else if (_tcsicmp(pstrName, _T("gradient")) == 0)
         SetGradient(pstrValue);
-    else if (_tcsicmp(pstrName, _T("bkcolor")) == 0 ||
-             _tcsicmp(pstrName, _T("bkcolor1")) == 0)
+    else if (_tcsicmp(pstrName, _T("bkcolor")) == 0 || _tcsicmp(pstrName, _T("bkcolor1")) == 0)
     {
         while (*pstrValue > _T('\0') && *pstrValue <= _T(' '))
             pstrValue = ::CharNext(pstrValue);
@@ -1351,7 +1335,7 @@ CControlUI* CControlUI::ApplyAttributeList(LPCTSTR pstrValue)
 
     LPCTSTR pstrList = sXmlData.GetData();
 
-	// 解析样式属性
+    // 解析样式属性
     CDuiString sItem;
     CDuiString sValue;
     while (*pstrList != _T('\0'))
@@ -1434,12 +1418,8 @@ bool CControlUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopControl)
     if (cxyBorderRound.cx > 0 || cxyBorderRound.cy > 0)
     {
         CRenderClip roundClip;
-        CRenderClip::GenerateRoundClip(hDC,
-                                       m_rcPaint,
-                                       m_rcItem,
-                                       cxyBorderRound.cx,
-                                       cxyBorderRound.cy,
-                                       roundClip);
+        CRenderClip::GenerateRoundClip(
+            hDC, m_rcPaint, m_rcItem, cxyBorderRound.cx, cxyBorderRound.cy, roundClip);
         PaintBkColor(hDC);
         PaintBkImage(hDC);
         PaintStatusImage(hDC);
@@ -1498,11 +1478,9 @@ void CControlUI::PaintBkColor(HDC hDC)
             }
         }
         else if (m_dwBackColor >= 0xFF000000)
-            CRenderEngine::DrawColor(
-                hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
+            CRenderEngine::DrawColor(hDC, m_rcPaint, GetAdjustColor(m_dwBackColor));
         else
-            CRenderEngine::DrawColor(
-                hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
+            CRenderEngine::DrawColor(hDC, m_rcItem, GetAdjustColor(m_dwBackColor));
     }
 }
 
@@ -1547,14 +1525,13 @@ void CControlUI::PaintBorder(HDC hDC)
         if (nBorderSize > 0 && (cxyBorderRound.cx > 0 || cxyBorderRound.cy > 0))
         {
             if (IsFocused() && m_dwFocusBorderColor != 0)
-                CRenderEngine::DrawRoundRect(
-                    hDC,
-                    m_rcItem,
-                    nBorderSize,
-                    cxyBorderRound.cx,
-                    cxyBorderRound.cy,
-                    GetAdjustColor(m_dwFocusBorderColor),
-                    m_nBorderStyle);
+                CRenderEngine::DrawRoundRect(hDC,
+                                             m_rcItem,
+                                             nBorderSize,
+                                             cxyBorderRound.cx,
+                                             cxyBorderRound.cy,
+                                             GetAdjustColor(m_dwFocusBorderColor),
+                                             m_nBorderStyle);
             else
                 CRenderEngine::DrawRoundRect(hDC,
                                              m_rcItem,
@@ -1574,8 +1551,8 @@ void CControlUI::PaintBorder(HDC hDC)
                                         GetAdjustColor(m_dwFocusBorderColor),
                                         m_nBorderStyle);
             }
-            else if (rcBorderSize.left > 0 || rcBorderSize.top > 0 ||
-                     rcBorderSize.right > 0 || rcBorderSize.bottom > 0)
+            else if (rcBorderSize.left > 0 || rcBorderSize.top > 0 || rcBorderSize.right > 0
+                     || rcBorderSize.bottom > 0)
             {
                 RECT rcBorder;
 
@@ -1624,11 +1601,8 @@ void CControlUI::PaintBorder(HDC hDC)
             }
             else if (nBorderSize > 0)
             {
-                CRenderEngine::DrawRect(hDC,
-                                        m_rcItem,
-                                        nBorderSize,
-                                        GetAdjustColor(m_dwBorderColor),
-                                        m_nBorderStyle);
+                CRenderEngine::DrawRect(
+                    hDC, m_rcItem, nBorderSize, GetAdjustColor(m_dwBorderColor), m_nBorderStyle);
             }
         }
     }

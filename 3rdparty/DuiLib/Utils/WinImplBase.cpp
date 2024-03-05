@@ -1,7 +1,8 @@
 #include "StdAfx.h"
 #include <algorithm>
 
-namespace DuiLib {
+namespace DuiLib
+{
 
 DUI_BEGIN_MESSAGE_MAP(WindowImplBase, CNotifyPump)
 DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK, OnClick)
@@ -63,20 +64,17 @@ LRESULT WindowImplBase::MessageHandler(UINT uMsg,
     {
         switch (wParam)
         {
-        case VK_RETURN:
-        case VK_ESCAPE:
-            return ResponseDefaultKeyEvent(wParam);
-        default:
-            break;
+            case VK_RETURN:
+            case VK_ESCAPE:
+                return ResponseDefaultKeyEvent(wParam);
+            default:
+                break;
         }
     }
     return FALSE;
 }
 
-LRESULT WindowImplBase::OnClose(UINT /*uMsg*/,
-                                WPARAM /*wParam*/,
-                                LPARAM /*lParam*/,
-                                BOOL& bHandled)
+LRESULT WindowImplBase::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
 {
     bHandled = FALSE;
     return 0;
@@ -102,10 +100,7 @@ LRESULT WindowImplBase::OnNcActivate(UINT /*uMsg*/,
     return (wParam == 0) ? TRUE : FALSE;
 }
 
-LRESULT WindowImplBase::OnNcCalcSize(UINT uMsg,
-                                     WPARAM wParam,
-                                     LPARAM lParam,
-                                     BOOL& bHandled)
+LRESULT WindowImplBase::OnNcCalcSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     return 0;
 }
@@ -141,8 +136,8 @@ BOOL WindowImplBase::IsInStaticControl(CControlUI* pControl)
     vctStaticName.push_back(_T("childlayoutui"));
     vctStaticName.push_back(_T("dialoglayoutui"));
     vctStaticName.push_back(_T("progresscontainerui"));
-    std::vector<CDuiString>::iterator it =
-        std::find(vctStaticName.begin(), vctStaticName.end(), strClassName);
+    std::vector<CDuiString>::iterator it
+        = std::find(vctStaticName.begin(), vctStaticName.end(), strClassName);
     if (vctStaticName.end() != it)
     {
         CControlUI* pParent = pControl->GetParent();
@@ -150,8 +145,7 @@ BOOL WindowImplBase::IsInStaticControl(CControlUI* pControl)
         {
             strClassName = pParent->GetClass();
             strClassName.MakeLower();
-            it = std::find(
-                vctStaticName.begin(), vctStaticName.end(), strClassName);
+            it = std::find(vctStaticName.begin(), vctStaticName.end(), strClassName);
             if (vctStaticName.end() == it)
             {
                 return bRet;
@@ -166,10 +160,7 @@ BOOL WindowImplBase::IsInStaticControl(CControlUI* pControl)
     return bRet;
 }
 
-LRESULT WindowImplBase::OnNcHitTest(UINT uMsg,
-                                    WPARAM wParam,
-                                    LPARAM lParam,
-                                    BOOL& bHandled)
+LRESULT WindowImplBase::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     POINT pt;
     pt.x = GET_X_LPARAM(lParam);
@@ -211,10 +202,8 @@ LRESULT WindowImplBase::OnNcHitTest(UINT uMsg,
         rcCaption.bottom = rcClient.bottom;
     }
 
-    if (pt.x >= rcClient.left + rcCaption.left 
-        && pt.x < rcClient.right - rcCaption.right 
-        && pt.y >= rcCaption.top 
-        && pt.y < rcCaption.bottom)
+    if (pt.x >= rcClient.left + rcCaption.left && pt.x < rcClient.right - rcCaption.right
+        && pt.y >= rcCaption.top && pt.y < rcCaption.bottom)
     {
         CControlUI* pControl = m_paintMgr.FindControl(pt);
         if (IsInStaticControl(pControl))
@@ -226,15 +215,11 @@ LRESULT WindowImplBase::OnNcHitTest(UINT uMsg,
     return HTCLIENT;
 }
 
-LRESULT WindowImplBase::OnGetMinMaxInfo(UINT uMsg,
-                                        WPARAM wParam,
-                                        LPARAM lParam,
-                                        BOOL& bHandled)
+LRESULT WindowImplBase::OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     MONITORINFO Monitor = {};
     Monitor.cbSize = sizeof(Monitor);
-    ::GetMonitorInfo(::MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTOPRIMARY),
-                     &Monitor);
+    ::GetMonitorInfo(::MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTOPRIMARY), &Monitor);
     RECT rcWork = Monitor.rcWork;
     if (Monitor.dwFlags != MONITORINFOF_PRIMARY)
     {
@@ -246,12 +231,10 @@ LRESULT WindowImplBase::OnGetMinMaxInfo(UINT uMsg,
     lpMMI->ptMaxPosition.y = rcWork.top;
     lpMMI->ptMaxSize.x = rcWork.right - rcWork.left;
     lpMMI->ptMaxSize.y = rcWork.bottom - rcWork.top;
-    lpMMI->ptMaxTrackSize.x = m_paintMgr.GetMaxInfo().cx == 0
-                                  ? rcWork.right - rcWork.left
-                                  : m_paintMgr.GetMaxInfo().cx;
-    lpMMI->ptMaxTrackSize.y = m_paintMgr.GetMaxInfo().cy == 0
-                                  ? rcWork.bottom - rcWork.top
-                                  : m_paintMgr.GetMaxInfo().cy;
+    lpMMI->ptMaxTrackSize.x
+        = m_paintMgr.GetMaxInfo().cx == 0 ? rcWork.right - rcWork.left : m_paintMgr.GetMaxInfo().cx;
+    lpMMI->ptMaxTrackSize.y
+        = m_paintMgr.GetMaxInfo().cy == 0 ? rcWork.bottom - rcWork.top : m_paintMgr.GetMaxInfo().cy;
     lpMMI->ptMinTrackSize.x = m_paintMgr.GetMinInfo().cx;
     lpMMI->ptMinTrackSize.y = m_paintMgr.GetMinInfo().cy;
 
@@ -268,10 +251,7 @@ LRESULT WindowImplBase::OnMouseWheel(UINT /*uMsg*/,
     return 0;
 }
 
-LRESULT WindowImplBase::OnMouseHover(UINT uMsg,
-                                     WPARAM wParam,
-                                     LPARAM lParam,
-                                     BOOL& bHandled)
+LRESULT WindowImplBase::OnMouseHover(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     bHandled = FALSE;
     return 0;
@@ -290,12 +270,8 @@ WindowImplBase::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
         rcWnd.Offset(-rcWnd.left, -rcWnd.top);
         rcWnd.right++;
         rcWnd.bottom++;
-        HRGN hRgn = ::CreateRoundRectRgn(rcWnd.left,
-                                         rcWnd.top,
-                                         rcWnd.right,
-                                         rcWnd.bottom,
-                                         szRoundCorner.cx,
-                                         szRoundCorner.cy);
+        HRGN hRgn = ::CreateRoundRectRgn(
+            rcWnd.left, rcWnd.top, rcWnd.right, rcWnd.bottom, szRoundCorner.cx, szRoundCorner.cy);
         ::SetWindowRgn(*this, hRgn, TRUE);
         ::DeleteObject(hRgn);
     }
@@ -311,10 +287,7 @@ WindowImplBase::OnChar(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
     return 0;
 }
 
-LRESULT WindowImplBase::OnSysCommand(UINT uMsg,
-                                     WPARAM wParam,
-                                     LPARAM lParam,
-                                     BOOL& bHandled)
+LRESULT WindowImplBase::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     if (wParam == SC_CLOSE)
     {
@@ -355,16 +328,12 @@ LRESULT WindowImplBase::OnSysCommand(UINT uMsg,
 #endif
 }
 
-LRESULT WindowImplBase::OnCreate(UINT uMsg,
-                                 WPARAM wParam,
-                                 LPARAM lParam,
-                                 BOOL& bHandled)
+LRESULT WindowImplBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     // 调整窗口样式
     LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
     styleValue &= ~WS_CAPTION;
-    ::SetWindowLong(
-        *this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+    ::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 
     // 关联UI管理器
     m_paintMgr.Init(m_hWnd, GetManagerName());
@@ -466,71 +435,72 @@ LRESULT WindowImplBase::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     BOOL bHandled = TRUE;
     switch (uMsg)
     {
-    case WM_CREATE:
-        lRes = OnCreate(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_CLOSE:
-        lRes = OnClose(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_DESTROY:
-        lRes = OnDestroy(uMsg, wParam, lParam, bHandled);
-        break;
+        case WM_CREATE:
+            lRes = OnCreate(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_CLOSE:
+            lRes = OnClose(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_DESTROY:
+            lRes = OnDestroy(uMsg, wParam, lParam, bHandled);
+            break;
+
 #if defined(WIN32) && !defined(UNDER_CE)
-    case WM_NCACTIVATE:
-        lRes = OnNcActivate(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_NCCALCSIZE:
-        lRes = OnNcCalcSize(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_NCPAINT:
-        lRes = OnNcPaint(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_NCHITTEST:
-        lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_GETMINMAXINFO:
-        lRes = OnGetMinMaxInfo(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_MOUSEWHEEL:
-        lRes = OnMouseWheel(uMsg, wParam, lParam, bHandled);
-        break;
+        case WM_NCACTIVATE:
+            lRes = OnNcActivate(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_NCCALCSIZE:
+            lRes = OnNcCalcSize(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_NCPAINT:
+            lRes = OnNcPaint(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_NCHITTEST:
+            lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_GETMINMAXINFO:
+            lRes = OnGetMinMaxInfo(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_MOUSEWHEEL:
+            lRes = OnMouseWheel(uMsg, wParam, lParam, bHandled);
+            break;
 #endif
-    case WM_SIZE:
-        lRes = OnSize(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_CHAR:
-        lRes = OnChar(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_SYSCOMMAND:
-        lRes = OnSysCommand(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_KEYDOWN:
-        lRes = OnKeyDown(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_KILLFOCUS:
-        lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_SETFOCUS:
-        lRes = OnSetFocus(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_LBUTTONUP:
-        lRes = OnLButtonUp(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_LBUTTONDOWN:
-        lRes = OnLButtonDown(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_MOUSEMOVE:
-        lRes = OnMouseMove(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_MOUSEHOVER:
-        lRes = OnMouseHover(uMsg, wParam, lParam, bHandled);
-        break;
-    case WM_TIMER:
-        lRes = OnTimer(uMsg, wParam, lParam, bHandled);
-        break;
-    default:
-        bHandled = FALSE;
-        break;
+        case WM_SIZE:
+            lRes = OnSize(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_CHAR:
+            lRes = OnChar(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_SYSCOMMAND:
+            lRes = OnSysCommand(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_KEYDOWN:
+            lRes = OnKeyDown(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_KILLFOCUS:
+            lRes = OnKillFocus(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_SETFOCUS:
+            lRes = OnSetFocus(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_LBUTTONUP:
+            lRes = OnLButtonUp(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_LBUTTONDOWN:
+            lRes = OnLButtonDown(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_MOUSEMOVE:
+            lRes = OnMouseMove(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_MOUSEHOVER:
+            lRes = OnMouseHover(uMsg, wParam, lParam, bHandled);
+            break;
+        case WM_TIMER:
+            lRes = OnTimer(uMsg, wParam, lParam, bHandled);
+            break;
+        default:
+            bHandled = FALSE;
+            break;
     }
     if (bHandled)
         return lRes;
@@ -541,13 +511,11 @@ LRESULT WindowImplBase::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     if (m_paintMgr.MessageHandler(uMsg, wParam, lParam, lRes))
         return lRes;
+
     return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
-LRESULT WindowImplBase::HandleCustomMessage(UINT uMsg,
-                                            WPARAM wParam,
-                                            LPARAM lParam,
-                                            BOOL& bHandled)
+LRESULT WindowImplBase::HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     bHandled = FALSE;
     return 0;
