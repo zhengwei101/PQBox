@@ -40,10 +40,10 @@ public:                                                                        \
 #define INNER_REGISTER_DUICONTROL(class_name)                                  \
     RegistControl(_T(#class_name), (CreateClass)class_name::CreateControl);
 
-#define INNER_REGISTER_DUICONTROL_EX(str_class_name, class_type)               \
+#define INNER_REGISTER_DUICONTROL_EX(class_name, class_type)                   \
     {                                                                          \
         CDuiString sRegClassName;                                              \
-        sRegClassName.Format(_T("C%sUI"), str_class_name);                     \
+        sRegClassName.Format(_T("C%sUI"), class_name);                         \
         RegistControl(sRegClassName, (CreateClass)class_type::CreateControl);  \
     }
 } // namespace DuiLib

@@ -57,7 +57,7 @@ public:
 class IListOwnerUI
 {
 public:
-    virtual UINT GetListType() = 0;
+    virtual ListType GetListType() = 0;
     virtual TListInfoUI* GetListInfo() = 0;
     virtual int GetCurSel() const = 0;
     virtual bool SelectItem(int iIndex, bool bTakeFocus = false) = 0;
@@ -132,7 +132,7 @@ public:
 
     CListHeaderUI* GetHeader() const override;
     CContainerUI* GetList() const override;
-    UINT GetListType() override;
+    ListType GetListType() override;
     TListInfoUI* GetListInfo() override;
 
     CControlUI* GetItemAt(int iIndex) const override;

@@ -3,18 +3,19 @@
 
 #pragma once
 
-namespace DuiLib {
+namespace DuiLib
+{
 
 class CControlUI;
 class CRichEditUI;
 class CIDropTarget;
 
-enum UILIB_RESTYPE
+enum class UILIB_RESTYPE
 {
-    UILIB_FILE = 1,    // 来自磁盘文件
-    UILIB_ZIP,         // 来自磁盘zip压缩包
-    UILIB_RESOURCE,    // 来自资源
-    UILIB_ZIPRESOURCE, // 来自资源的zip压缩包
+    FILE,        // 来自磁盘文件
+    ZIP,         // 来自磁盘zip压缩包
+    RESOURCE,    // 来自资源
+    ZIPRESOURCE, // 来自资源的zip压缩包
 };
 
 enum EVENTTYPE_UI
@@ -49,7 +50,6 @@ enum EVENTTYPE_UI
     UIEVENT__LAST,
 };
 
-
 // 内部保留的消息
 enum MSGTYPE_UI
 {
@@ -59,31 +59,28 @@ enum MSGTYPE_UI
     UIMSG_USER = WM_USER + 100,   // 程序自定义消息
 };
 
-
-
 // Flags for CControlUI::GetControlFlags()
-#define UIFLAG_TABSTOP 0x00000001
-#define UIFLAG_SETCURSOR 0x00000002
+#define UIFLAG_TABSTOP    0x00000001
+#define UIFLAG_SETCURSOR  0x00000002
 #define UIFLAG_WANTRETURN 0x00000004
 
 // Flags for FindControl()
-#define UIFIND_ALL 0x00000000
-#define UIFIND_VISIBLE 0x00000001
-#define UIFIND_ENABLED 0x00000002
-#define UIFIND_HITTEST 0x00000004
+#define UIFIND_ALL        0x00000000
+#define UIFIND_VISIBLE    0x00000001
+#define UIFIND_ENABLED    0x00000002
+#define UIFIND_HITTEST    0x00000004
 #define UIFIND_UPDATETEST 0x00000008
-#define UIFIND_TOP_FIRST 0x00000010
-#define UIFIND_ME_FIRST 0x80000000
+#define UIFIND_TOP_FIRST  0x00000010
+#define UIFIND_ME_FIRST   0x80000000
 
 // Flags used for controlling the paint
-#define UISTATE_FOCUSED 0x00000001
+#define UISTATE_FOCUSED  0x00000001
 #define UISTATE_SELECTED 0x00000002
 #define UISTATE_DISABLED 0x00000004
-#define UISTATE_HOT 0x00000008
-#define UISTATE_PUSHED 0x00000010
+#define UISTATE_HOT      0x00000008
+#define UISTATE_PUSHED   0x00000010
 #define UISTATE_READONLY 0x00000020
 #define UISTATE_CAPTURED 0x00000040
-
 
 struct UILIB_API TFontInfo
 {
@@ -112,9 +109,7 @@ struct UILIB_API TImageInfo
 
 struct UILIB_API TDrawInfo
 {
-    void Parse(LPCTSTR pStrImage, 
-        LPCTSTR pStrModify, 
-        CPaintManagerUI* pManager);
+    void Parse(LPCTSTR pStrImage, LPCTSTR pStrModify, CPaintManagerUI* pManager);
 
     CDuiString sDrawString;
     CDuiString sDrawModify;
@@ -139,7 +134,6 @@ struct UILIB_API TDrawInfo
     CDuiString sAlign;
 };
 
-
 struct UILIB_API TPercentInfo
 {
     double left;
@@ -163,8 +157,7 @@ struct UILIB_API TResInfo
     CStdStringPtrMap m_DrawInfoHash;
 };
 
-// Structure for notifications from the system
-// to the control implementation.
+// Structure for notifications from the system to the control implementation.
 struct UILIB_API TEventUI
 {
     int Type;
@@ -177,7 +170,7 @@ struct UILIB_API TEventUI
     LPARAM lParam;
 };
 
-// Drag&Drop control
+// Drag & Drop control
 const TCHAR* const CF_MOVECONTROL = _T("CF_MOVECONTROL");
 
 struct UILIB_API TCFMoveUI
@@ -196,8 +189,7 @@ public:
 class IMessageFilterUI
 {
 public:
-    virtual LRESULT
-    MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled) = 0;
+    virtual LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled) = 0;
 };
 
 class ITranslateAccelerator
@@ -209,12 +201,8 @@ public:
 class IDragDropUI
 {
 public:
-    virtual bool OnDragDrop(CControlUI* pControl)
-    {
-        return false;
-    }
+    virtual bool OnDragDrop(CControlUI* pControl) { return false; }
 };
-
 
 using LPCREATECONTROL = CControlUI* (*)(LPCTSTR pstrType);
 
@@ -289,17 +277,14 @@ public:
     static void SetCurrentPath(LPCTSTR pStrPath);
     static void SetResourceDll(HINSTANCE hInst);
     static void SetResourcePath(LPCTSTR pStrPath);
-    static void
-    SetResourceZip(LPVOID pVoid, unsigned int len, LPCTSTR password = NULL);
+    static void SetResourceZip(LPVOID pVoid, unsigned int len, LPCTSTR password = NULL);
     static void SetResourceZip(LPCTSTR pstrZip,
                                bool bCachedResourceZip = false,
                                LPCTSTR password = NULL);
-    static void SetResourceType(int nType);
-    static int GetResourceType();
+    static void SetResourceType(UILIB_RESTYPE nType);
+    static UILIB_RESTYPE GetResourceType();
     static bool GetHSL(short* H, short* S, short* L);
-    static void SetHSL(bool bUseHSL,
-                       short H,
-                       short S,
+    static void SetHSL(bool bUseHSL, short H, short S,
                        short L); // H:0~360, S:0~200, L:0~200
     static void ReloadSkin();
     static CPaintManagerUI* GetPaintManager(LPCTSTR pstrName);
@@ -339,11 +324,7 @@ public:
                   bool bItalic,
                   bool bShared = false);
     HFONT GetFont(int id);
-    HFONT GetFont(LPCTSTR pStrFontName,
-                  int nSize,
-                  bool bBold,
-                  bool bUnderline,
-                  bool bItalic);
+    HFONT GetFont(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic);
     int GetFontIndex(HFONT hFont, bool bShared = false);
     int GetFontIndex(LPCTSTR pStrFontName,
                      int nSize,
@@ -390,8 +371,7 @@ public:
                                  LPCTSTR pStrControlAttrList,
                                  bool bShared = false);
     LPCTSTR GetDefaultAttributeList(LPCTSTR pStrControlName) const;
-    bool RemoveDefaultAttributeList(LPCTSTR pStrControlName,
-                                    bool bShared = false);
+    bool RemoveDefaultAttributeList(LPCTSTR pStrControlName, bool bShared = false);
     void RemoveAllDefaultAttributeList(bool bShared = false);
 
     void AddWindowCustomAttribute(LPCTSTR pstrName, LPCTSTR pstrAttr);
@@ -406,14 +386,12 @@ public:
     const CStdStringPtrMap& GetStyles(bool bShared = false) const;
     void RemoveAllStyle(bool bShared = false);
 
-    const TImageInfo* GetImageString(LPCTSTR pStrImage,
-                                     LPCTSTR pStrModify = NULL);
+    const TImageInfo* GetImageString(LPCTSTR pStrImage, LPCTSTR pStrModify = NULL);
 
     // 初始化拖拽
     bool EnableDragDrop(bool bEnable);
     void SetDragDrop(IDragDropUI* pDragDrop);
-    virtual bool
-    OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect);
+    virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect);
 
     bool AttachDialog(CControlUI* pControl);
     bool InitControls(CControlUI* pControl, CControlUI* pParent = NULL);
@@ -473,21 +451,16 @@ public:
     bool RemoveMouseLeaveNeeded(CControlUI* pControl);
 
     bool AddTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator);
-    bool
-    RemoveTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator);
+    bool RemoveTranslateAccelerator(ITranslateAccelerator* pTranslateAccelerator);
     bool TranslateAccelerator(LPMSG pMsg);
 
     CControlUI* GetRoot() const;
     CControlUI* FindControl(POINT pt) const;
     CControlUI* FindControl(LPCTSTR pstrName) const;
     CControlUI* FindSubControlByPoint(CControlUI* pParent, POINT pt) const;
-    CControlUI* FindSubControlByName(CControlUI* pParent,
-                                     LPCTSTR pstrName) const;
-    CControlUI* FindSubControlByClass(CControlUI* pParent,
-                                      LPCTSTR pstrClass,
-                                      int iIndex = 0);
-    CStdPtrArray* FindSubControlsByClass(CControlUI* pParent,
-                                         LPCTSTR pstrClass);
+    CControlUI* FindSubControlByName(CControlUI* pParent, LPCTSTR pstrName) const;
+    CControlUI* FindSubControlByClass(CControlUI* pParent, LPCTSTR pstrClass, int iIndex = 0);
+    CStdPtrArray* FindSubControlsByClass(CControlUI* pParent, LPCTSTR pstrClass);
 
     static void MessageLoop();
     static bool TranslateMessage(const LPMSG pMsg);
@@ -500,30 +473,20 @@ public:
     static void SetAllDPI(int iDPI);
 
     bool MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
-    bool
-    PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
+    bool PreMessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT& lRes);
     void UsedVirtualWnd(bool bUsed);
 
 private:
     CStdPtrArray* GetFoundControls();
-    static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis,
-                                                          LPVOID pData);
-    static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis,
-                                                       LPVOID pData);
-    static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis,
-                                                       LPVOID pData);
-    static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis,
-                                                     LPVOID pData);
-    static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis,
-                                                          LPVOID pData);
-    static CControlUI* CALLBACK __FindControlFromName(CControlUI* pThis,
-                                                      LPVOID pData);
-    static CControlUI* CALLBACK __FindControlFromClass(CControlUI* pThis,
-                                                       LPVOID pData);
-    static CControlUI* CALLBACK __FindControlsFromClass(CControlUI* pThis,
-                                                        LPVOID pData);
-    static CControlUI* CALLBACK __FindControlsFromUpdate(CControlUI* pThis,
-                                                         LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromNameHash(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromCount(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromPoint(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromTab(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromShortcut(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromName(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlFromClass(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlsFromClass(CControlUI* pThis, LPVOID pData);
+    static CControlUI* CALLBACK __FindControlsFromUpdate(CControlUI* pThis, LPVOID pData);
 
     static void AdjustSharedImagesHSL();
     void AdjustImagesHSL();
@@ -531,7 +494,10 @@ private:
 
 private:
     CDuiString m_sName;
-    HWND m_hWndPaint; //所附加的窗体的句柄
+
+    //所附加的窗体的句柄
+    HWND m_hWndPaint;
+
     HDC m_hDcPaint;
     HDC m_hDcOffscreen;
     HDC m_hDcBackground;
@@ -547,7 +513,6 @@ private:
     bool m_bNoActivate;
     bool m_bShowUpdateRect;
 
-    //
     CControlUI* m_pRoot;
     CControlUI* m_pFocus;
     CControlUI* m_pEventHover;
@@ -555,7 +520,7 @@ private:
     CControlUI* m_pEventRClick;
     CControlUI* m_pEventKey;
     CControlUI* m_pLastToolTip;
-    //
+
     POINT m_ptLastMousePos;
     SIZE m_szMinWindow;
     SIZE m_szMaxWindow;
@@ -582,7 +547,6 @@ private:
     bool m_bUsedVirtualWnd;
     bool m_bAsyncNotifyPosted;
 
-    //
     CStdPtrArray m_aNotifiers;
     CStdPtrArray m_aTimers;
     CStdPtrArray m_aTranslateAccelerator;
@@ -596,6 +560,7 @@ private:
     CStdPtrArray m_aFoundControls;
     CStdPtrArray m_aFonts;
     CStdPtrArray m_aNeedMouseLeaveNeeded;
+
     CStdStringPtrMap m_mNameHash;
     CStdStringPtrMap m_mWindowCustomAttrHash;
     CStdStringPtrMap m_mOptionGroup;
@@ -608,9 +573,12 @@ private:
 
     // DPI管理器
     CDPI* m_pDPI;
+
     // 是否开启Gdiplus
     bool m_bUseGdiplusText;
-    int m_trh;
+
+    int m_textRenderHint;
+
     ULONG_PTR m_gdiplusToken;
     Gdiplus::GdiplusStartupInput* m_pGdiplusStartupInput;
 
@@ -619,7 +587,7 @@ private:
     bool m_bDragMode;
     HBITMAP m_hDragBitmap;
     IDragDropUI* m_pDragDrop;
-    //
+
     static HINSTANCE m_hInstance;
     static HINSTANCE m_hResourceInstance;
     static CDuiString m_pStrResourcePath;
@@ -629,8 +597,8 @@ private:
     static BYTE* m_cbZipBuf;
 
     static bool m_bCachedResourceZip;
-    static int m_nResType;
-    static TResInfo m_SharedResInfo;
+    static UILIB_RESTYPE m_resType;
+    static TResInfo m_sharedResInfo;
     static bool m_bUseHSL;
     static short m_H;
     static short m_S;

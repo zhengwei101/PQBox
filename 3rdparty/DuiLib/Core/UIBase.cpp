@@ -90,7 +90,6 @@ LPCTSTR DUI__TraceMsg(UINT uMsg)
     return szMsg;
 }
 
-
 DUI_BASE_BEGIN_MESSAGE_MAP(CNotifyPump)
 DUI_END_MESSAGE_MAP()
 
@@ -142,8 +141,8 @@ bool CNotifyPump::RemoveVirtualWnd(CDuiString strName)
 
 bool CNotifyPump::LoopDispatch(TNotifyUI& msg)
 {
-    const DUI_MSGMAP_ENTRY* lpEntry = NULL;
-    const DUI_MSGMAP* pMessageMap = NULL;
+    const DUI_MSGMAP_ENTRY* lpEntry = nullptr;
+    const DUI_MSGMAP* pMessageMap = nullptr;
 
 #ifndef UILIB_STATIC
     for (pMessageMap = GetMessageMap(); pMessageMap != NULL;
@@ -157,11 +156,12 @@ bool CNotifyPump::LoopDispatch(TNotifyUI& msg)
 #else
         ASSERT(pMessageMap != pMessageMap->pBaseMap);
 #endif
-        if ((lpEntry = DuiFindMessageEntry(pMessageMap->lpEntries, msg)) != NULL)
+        if ((lpEntry = DuiFindMessageEntry(pMessageMap->lpEntry, msg)) != nullptr)
         {
             goto LDispatch;
         }
     }
+
     return false;
 
 LDispatch:
@@ -169,11 +169,8 @@ LDispatch:
     mmf.pfn = lpEntry->pfn;
 
     bool bRet = false;
-    int nSig;
-    nSig = lpEntry->nSig;
-    switch (nSig)
+    switch (lpEntry->nSig)
     {
-        default: ASSERT(FALSE); break;
         case DuiSig_lwl:
             (this->*mmf.pfn_Notify_lwl)(msg.wParam, msg.lParam);
             bRet = true;
@@ -182,6 +179,7 @@ LDispatch:
             (this->*mmf.pfn_Notify_vn)(msg);
             bRet = true;
             break;
+        default: ASSERT(FALSE); break;
     }
     return bRet;
 }
@@ -197,8 +195,7 @@ void CNotifyPump::NotifyPump(TNotifyUI& msg)
             {
                 if (_tcsicmp(key, msg.sVirtualWnd.GetData()) == 0)
                 {
-                    CNotifyPump* pObject =
-                        static_cast<CNotifyPump*>(m_VirtualWndMap.Find(key, false));
+                    auto pObject = static_cast<CNotifyPump*>(m_VirtualWndMap.Find(key, false));
                     if (pObject && pObject->LoopDispatch(msg))
                         return;
                 }
@@ -209,7 +206,6 @@ void CNotifyPump::NotifyPump(TNotifyUI& msg)
     //遍历主窗口
     LoopDispatch(msg);
 }
-
 
 CWindowWnd::CWindowWnd()
     : m_hWnd(NULL)
@@ -493,7 +489,7 @@ bool CWindowWnd::RegisterWindowClass()
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hIcon = NULL;
-    wc.lpfnWndProc = CWindowWnd::__WndProc;
+    wc.lpfnWndProc = CWindowWnd::__WndProc; //窗口过程
     wc.hInstance = CPaintManagerUI::GetInstance();
     wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = NULL;

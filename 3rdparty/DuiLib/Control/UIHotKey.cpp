@@ -88,7 +88,7 @@ LRESULT CHotKeyWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     }
     else if (uMsg == WM_KEYDOWN && TCHAR(wParam) == VK_RETURN)
     {
-        m_pOwner->GetManager()->SendNotify(m_pOwner, _T("return"));
+        m_pOwner->GetManager()->SendNotify(m_pOwner, DUI_MSGTYPE_RETURN);
     }
     else if ((uMsg == WM_NCACTIVATE) || (uMsg == WM_NCACTIVATE) ||
              (uMsg == WM_NCCALCSIZE))
@@ -166,7 +166,7 @@ LRESULT CHotKeyWnd::OnEditChanged(UINT uMsg,
     {
         m_pOwner->m_sText = GetHotKeyName();
     }
-    m_pOwner->GetManager()->SendNotify(m_pOwner, _T("textchanged"));
+    m_pOwner->GetManager()->SendNotify(m_pOwner, DUI_MSGTYPE_TEXTCHANGED);
     return 0;
 }
 

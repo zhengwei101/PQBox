@@ -2383,12 +2383,13 @@ void CRenderEngine::DrawHtmlText(HDC hDC,
     //   Color:            <c #xxxxxx>text</c>  where x = RGB in hex
     //   Font:             <f x>text</f>        where x = font id
     //   Italic:           <i>text</i>
-    //   Image:            <i x y z>            where x = image name and y =
-    //   imagelist num and z(optional) = imagelist id Link:             <a
-    //   x>text</a>        where x(optional) = link content, normal like
-    //   app:notepad or http:www.xxx.com NewLine           <n> Paragraph: <p
-    //   x>text</p>        where x = extra pixels indent in p Raw Text:
-    //   <r>text</r> Selected:         <s>text</s> Underline:        <u>text</u>
+    //   Image:            <i x y z>            where x = image name and y = imagelist num and z(optional) = imagelist id
+    //   Link:             <a x>text</a>        where x(optional) = link content, normal like app:notepad or http:www.xxx.com
+    //   NewLine           <n>
+    //   Paragraph:        <p x>text</p>        where x = extra pixels indent in p
+    //   Raw Text:         <r>text</r>
+    //   Selected:         <s>text</s>
+    //   Underline:        <u>text</u>
     //   X Indent:         <x i>                where i = hor indent in pixels
     //   Y Indent:         <y i>                where i = ver indent in pixels
 

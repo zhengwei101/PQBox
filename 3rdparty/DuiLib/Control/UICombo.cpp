@@ -31,11 +31,11 @@ public:
 
 void CComboWnd::Notify(TNotifyUI& msg)
 {
-    if (msg.sType == _T("windowinit"))
+    if (msg.sType == DUI_MSGTYPE_WINDOWINIT)
     {
         EnsureVisible(m_iOldSel);
     }
-    else if (msg.sType == _T("click"))
+    else if (msg.sType == DUI_MSGTYPE_CLICK)
     {
         // ²âÊÔ´úÂë
         CDuiString sName = msg.pSender->GetName();
@@ -398,9 +398,9 @@ void CComboUI::DoInit()
 {
 }
 
-UINT CComboUI::GetListType()
+ListType CComboUI::GetListType()
 {
-    return LT_COMBO;
+    return ListType::COMBO;
 }
 
 TListInfoUI* CComboUI::GetListInfo()

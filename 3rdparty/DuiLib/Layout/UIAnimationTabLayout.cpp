@@ -59,7 +59,7 @@ bool CAnimationTabLayoutUI::SelectItem(int iIndex)
     if (m_pManager)
     {
         m_pManager->SetNextTabControl();
-        m_pManager->SendNotify(this, _T("tabselect"), m_iCurSel, iOldSel);
+        m_pManager->SendNotify(this, DUI_MSGTYPE_TABSELECT, m_iCurSel, iOldSel);
     }
     return true;
 }

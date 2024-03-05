@@ -5,12 +5,12 @@ namespace DuiLib {
 #define CARET_TIMERID 0x1999
 
 // 列表类型
-enum ListType
+enum class ListType
 {
-    LT_LIST = 0,
-    LT_COMBO,
-    LT_TREE,
-    LT_MENU,
+    LIST,
+    COMBO,
+    TREE,
+    MENU,
 };
 
 // 鼠标光标定义
@@ -53,13 +53,16 @@ struct TNotifyUI
 };
 
 class CNotifyPump;
-using DUI_PMSG = void (CNotifyPump::*)(TNotifyUI& msg); //指针类型
+//定义指针类型
+using DUI_PMSG = void (CNotifyPump::*)(TNotifyUI& msg); 
+using DUI_PMSG_PARAM = LRESULT (CNotifyPump::*)(WPARAM, LPARAM);
+using DUI_PMSG_VOID = void (CNotifyPump::*)(TNotifyUI&);
 
 union DuiMessageMapFunctions
 {
     DUI_PMSG pfn; // generic member function pointer
-    LRESULT (CNotifyPump::*pfn_Notify_lwl)(WPARAM, LPARAM);
-    void (CNotifyPump::*pfn_Notify_vn)(TNotifyUI&);
+    DUI_PMSG_PARAM pfn_Notify_lwl;
+    DUI_PMSG_VOID pfn_Notify_vn;
 };
 
 //定义所有消息类型
@@ -97,7 +100,6 @@ union DuiMessageMapFunctions
 #define DUI_MSGTYPE_TEXTCHANGED (_T("textchanged"))
 #define DUI_MSGTYPE_HEADERCLICK (_T("headerclick"))
 #define DUI_MSGTYPE_ITEMDBCLICK (_T("itemdbclick"))
-#define DUI_MSGTYPE_SHOWACTIVEX (_T("showactivex"))
 
 #define DUI_MSGTYPE_ITEMCOLLAPSE (_T("itemcollapse"))
 #define DUI_MSGTYPE_ITEMACTIVATE (_T("itemactivate"))
@@ -122,14 +124,15 @@ union DuiMessageMapFunctions
 //////////////////////////////////////////////////////////////////////////
 
 struct DUI_MSGMAP_ENTRY;
-struct DUI_MSGMAP
+struct DUI_MSGMAP 
 {
+//路由信息
 #ifndef UILIB_STATIC
     const DUI_MSGMAP*(PASCAL* pfnGetBaseMap)();
 #else
-    const DUI_MSGMAP* pBaseMap;
+    const DUI_MSGMAP* pBaseMap;  //指针父类路由表的指针
 #endif
-    const DUI_MSGMAP_ENTRY* lpEntries;
+    const DUI_MSGMAP_ENTRY* lpEntry; //本类路由表指针
 };
 
 //结构定义
@@ -137,8 +140,8 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
 {
     CDuiString sMsgType;  // DUI消息类型
     CDuiString sCtrlName; // 控件名称
-    UINT nSig;            // 标记函数指针类型
-    DUI_PMSG pfn;         // 指向函数的指针
+    UINT nSig;            // 信号类型，标记函数指针类型
+    DUI_PMSG pfn;         // 回调函数，指向函数的指针, PMSG(Process Message),
 };
 
 //定义
@@ -168,14 +171,15 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
 #    define DUI_BASE_BEGIN_MESSAGE_MAP(theClass)                               \
         const DUI_MSGMAP* PASCAL theClass::_GetBaseMessageMap()                \
         {                                                                      \
-            return nullptr;                                                       \
+            return nullptr;                                                    \
         }                                                                      \
         const DUI_MSGMAP* theClass::GetMessageMap() const                      \
         {                                                                      \
             return &theClass::messageMap;                                      \
         }                                                                      \
         UILIB_COMDAT const DUI_MSGMAP theClass::messageMap = {                 \
-            &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0]};     \
+            &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0]       \
+        };                                                                     \
         UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] = {
 
 #else
@@ -185,7 +189,8 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
             return &theClass::messageMap;                                      \
         }                                                                      \
         UILIB_COMDAT const DUI_MSGMAP theClass::messageMap = {                 \
-            NULL, &theClass::_messageEntries[0]};                              \
+            NULL, &theClass::_messageEntries[0]                                \
+        };                                                                     \
         UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] = {
 
 #endif
@@ -202,7 +207,8 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
             return &theClass::messageMap;                                      \
         }                                                                      \
         UILIB_COMDAT const DUI_MSGMAP theClass::messageMap = {                 \
-            &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0]};     \
+            &theClass::_GetBaseMessageMap, &theClass::_messageEntries[0]       \
+        };                                                                     \
         UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] = {
 
 #else
@@ -212,7 +218,8 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
             return &theClass::messageMap;                                      \
         }                                                                      \
         UILIB_COMDAT const DUI_MSGMAP theClass::messageMap = {                 \
-            &baseClass::messageMap, &theClass::_messageEntries[0]};            \
+            &baseClass::messageMap, &theClass::_messageEntries[0]              \
+        };                                                                     \
         UILIB_COMDAT const DUI_MSGMAP_ENTRY theClass::_messageEntries[] = {
 
 #endif
@@ -271,7 +278,6 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
 
 #define DUI_CTR_COMBO (_T("Combo"))
 #define DUI_CTR_LABEL (_T("Label"))
-#define DUI_CTR_FLASH (_T("Flash"))
 
 #define DUI_CTR_BUTTON (_T("Button"))
 #define DUI_CTR_OPTION (_T("Option"))
@@ -279,7 +285,6 @@ struct DUI_MSGMAP_ENTRY //定义一个结构体，来存放消息信息
 #define DUI_CTR_TAB_BOX (_T("TabBox"))
 
 #define DUI_CTR_CONTROL (_T("Control"))
-#define DUI_CTR_ACTIVEX (_T("ActiveX"))
 #define DUI_CTR_GIFANIM (_T("GifAnim"))
 #define DUI_CTR_TILE_BOX (_T("TileBox"))
 #define DUI_CTR_LOADINGCIRCLE (_T("Loading"))

@@ -120,7 +120,7 @@ public:
 
     LPVOID GetInterface(LPCTSTR pstrName) override;
 
-    UINT GetListType() override;
+    ListType GetListType() override;
 
     virtual bool Add(CTreeNodeUI* pControl);
     virtual long AddAt(CTreeNodeUI* pControl, int iIndex);

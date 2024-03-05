@@ -250,7 +250,7 @@ public:
     CMenuWnd* m_pWindow;
     LPCTSTR GetClass() const;
     LPVOID GetInterface(LPCTSTR pstrName);
-    UINT GetListType();
+    ListType GetListType();
 
     virtual void DoEvent(TEventUI& event);
 

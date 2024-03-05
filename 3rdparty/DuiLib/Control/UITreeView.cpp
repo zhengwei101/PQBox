@@ -556,9 +556,9 @@ LPCTSTR CTreeViewUI::GetClass() const
     return _T("TreeViewUI");
 }
 
-UINT CTreeViewUI::GetListType()
+ListType CTreeViewUI::GetListType()
 {
-    return LT_TREE;
+    return ListType::TREE;
 }
 
 LPVOID CTreeViewUI::GetInterface(LPCTSTR pstrName)

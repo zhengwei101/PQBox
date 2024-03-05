@@ -1,3 +1,4 @@
+#include "StdAfx.h"
 #include "unzip.h"
 #include <windows.h>
 #include <stdio.h>

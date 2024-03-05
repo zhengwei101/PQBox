@@ -30,9 +30,9 @@ LPVOID CMenuUI::GetInterface(LPCTSTR pstrName)
     return CListUI::GetInterface(pstrName);
 }
 
-UINT CMenuUI::GetListType()
+ListType CMenuUI::GetListType()
 {
-    return LT_MENU;
+    return ListType::MENU;
 }
 
 void CMenuUI::DoEvent(TEventUI& event)
@@ -305,7 +305,7 @@ void CMenuWnd::Notify(TNotifyUI& msg)
 {
     if (CMenuWnd::GetGlobalContextMenuObserver().GetManager() != NULL)
     {
-        if (msg.sType == _T("click") || msg.sType == _T("valuechanged"))
+        if (msg.sType == DUI_MSGTYPE_CLICK || msg.sType == DUI_MSGTYPE_VALUECHANGED)
         {
             CMenuWnd::GetGlobalContextMenuObserver().GetManager()->SendNotify(
                 msg, false);

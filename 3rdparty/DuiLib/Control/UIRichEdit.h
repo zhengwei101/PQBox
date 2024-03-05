@@ -3,11 +3,14 @@
 
 #pragma once
 
-namespace DuiLib {
+namespace DuiLib
+{
 
 class CTxtWinHost;
 
-class UILIB_API CRichEditUI : public CContainerUI, public IMessageFilterUI
+class UILIB_API CRichEditUI
+    : public CContainerUI
+    , public IMessageFilterUI
 {
     DECLARE_DUICONTROL(CRichEditUI)
 public:
@@ -37,11 +40,7 @@ public:
     void SetWordWrap(bool bWordWrap = true);
     int GetFont();
     void SetFont(int index);
-    void SetFont(LPCTSTR pStrFontName,
-                 int nSize,
-                 bool bBold,
-                 bool bUnderline,
-                 bool bItalic);
+    void SetFont(LPCTSTR pStrFontName, int nSize, bool bBold, bool bUnderline, bool bItalic);
     LONG GetWinStyle();
     void SetWinStyle(LONG lStyle);
     DWORD GetTextColor();
@@ -73,8 +72,7 @@ public:
     CDuiString GetTextRange(long nStartChar, long nEndChar) const;
     void HideSelection(bool bHide = true, bool bChangeStyle = false);
     void ScrollCaret();
-    int
-    InsertText(long nInsertAfterChar, LPCTSTR lpstrText, bool bCanUndo = false);
+    int InsertText(long nInsertAfterChar, LPCTSTR lpstrText, bool bCanUndo = false);
     int AppendText(LPCTSTR lpstrText, bool bCanUndo = false);
     DWORD GetDefaultCharFormat(CHARFORMAT2& cf) const;
     bool SetDefaultCharFormat(CHARFORMAT2& cf);
@@ -131,10 +129,7 @@ public:
     bool SetDropAcceptFile(bool bAccept);
     // 注意：TxSendMessage和SendMessage是有区别的，TxSendMessage没有multibyte和unicode自动转换的功能，
     // 而richedit2.0内部是以unicode实现的，在multibyte程序中，必须自己处理unicode到multibyte的转换
-    virtual HRESULT TxSendMessage(UINT msg,
-                                  WPARAM wparam,
-                                  LPARAM lparam,
-                                  LRESULT* plresult) const;
+    virtual HRESULT TxSendMessage(UINT msg, WPARAM wparam, LPARAM lparam, LRESULT* plresult) const;
     IDropTarget* GetTxDropTarget();
     virtual bool OnTxViewChanged();
     virtual void OnTxNotify(DWORD iNotify, void* pv);
@@ -164,8 +159,7 @@ public:
 
     void SetBlockTextOnFocus(bool bBlock);
 
-    LRESULT
-    MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
+    LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, bool& bHandled);
 
 protected:
     enum
@@ -190,7 +184,8 @@ protected:
     bool m_bInited;
     bool m_bBlockTextOnFocus = false;
 
-    bool m_fAccumulateDBC; // TRUE - need to cumulate ytes from 2 WM_CHAR msgs
+    bool m_fAccumulateDBC; // TRUE - need to cumulate bytes from 2 WM_CHAR msgs
+
     // we are in this mode when we receive VK_PROCESSKEY
     UINT m_chLeadByte; // use when we are in _fAccumulateDBC mode
 

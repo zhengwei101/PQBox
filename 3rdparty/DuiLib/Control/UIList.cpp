@@ -827,9 +827,9 @@ int CListUI::GetNextSelItem(int nItem) const
     return (int)m_aSelItems.GetAt(aIndex + 1);
 }
 
-UINT CListUI::GetListType()
+ListType CListUI::GetListType()
 {
-    return LT_LIST;
+    return ListType::LIST;
 }
 
 TListInfoUI* CListUI::GetListInfo()
@@ -1775,8 +1775,8 @@ void CListBodyUI::SetPos(RECT rc, bool bNeedInvalidate)
             }
         }
     }
-    UINT uListType = m_pOwner->GetListType();
-    if (uListType == LT_LIST)
+    ListType uListType = m_pOwner->GetListType();
+    if (uListType == ListType::LIST)
     {
         // ¼ÆËãºáÏò³ß´ç
         int nItemCount = m_items.GetSize();
@@ -3854,8 +3854,8 @@ void CListContainerElementUI::SetPos(RECT rc, bool bNeedInvalidate)
     if (!m_pOwner)
         return;
 
-    UINT uListType = m_pOwner->GetListType();
-    if (uListType == LT_LIST)
+    ListType uListType = m_pOwner->GetListType();
+    if (uListType == ListType::LIST)
     {
         int nFixedWidth = GetFixedWidth();
         if (nFixedWidth > 0)
@@ -3876,10 +3876,10 @@ void CListContainerElementUI::SetPos(RECT rc, bool bNeedInvalidate)
     }
     CHorizontalLayoutUI::SetPos(rc, bNeedInvalidate);
 
-    if (uListType != LT_LIST && uListType != LT_TREE)
+    if (uListType != ListType::LIST && uListType != ListType::TREE)
         return;
     CListUI* pList = static_cast<CListUI*>(m_pOwner);
-    if (uListType == LT_TREE)
+    if (uListType == ListType::TREE)
     {
         pList = (CListUI*)pList->CControlUI::GetInterface(_T("List"));
         if (pList == NULL)

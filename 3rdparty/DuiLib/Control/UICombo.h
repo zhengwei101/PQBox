@@ -51,7 +51,7 @@ public:
     LPCTSTR GetDropBoxBkImage();
     void SetDropBoxBkImage(LPCTSTR pStrImage);
 
-    UINT GetListType();
+    ListType GetListType();
     TListInfoUI* GetListInfo();
     int GetCurSel() const;
     bool SelectItem(int iIndex, bool bTakeFocus = false);

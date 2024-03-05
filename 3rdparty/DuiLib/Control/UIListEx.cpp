@@ -186,7 +186,7 @@ void CListExUI::Notify(TNotifyUI& msg)
     else if (_tcsicmp(strName, _T("ListEx_Combo")) == 0 && m_pComboBoxUI &&
              m_nRow >= 0 && m_nColum >= 0)
     {
-        int iCurSel = msg.wParam;
+        //int iCurSel = msg.wParam;
         int iOldSel = msg.lParam;
 
         if (_tcsicmp(msg.sType, DUI_MSGTYPE_SETFOCUS) == 0) {}
@@ -206,7 +206,7 @@ void CListExUI::Notify(TNotifyUI& msg)
             m_pComboBoxUI->SetPos(rc);
         }
     }
-    else if (_tcsicmp(msg.sType, _T("scroll")) == 0 &&
+    else if (_tcsicmp(msg.sType, DUI_MSGTYPE_SCROLL) == 0 &&
              (m_pComboBoxUI || m_pEditUI) && m_nRow >= 0 && m_nColum >= 0)
     {
         HideEditAndComboCtrl();
