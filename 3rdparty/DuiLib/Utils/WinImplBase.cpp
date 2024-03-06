@@ -296,36 +296,27 @@ LRESULT WindowImplBase::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
         return 0;
     }
 
-    return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
-
-#if 0
-#    if defined(WIN32) && !defined(UNDER_CE)
-        BOOL bZoomed = ::IsZoomed(*this);
-        if (::IsZoomed(*this) != bZoomed)
+#if defined(WIN32) && !defined(UNDER_CE)
+    BOOL bZoomed = ::IsZoomed(*this);
+    LRESULT lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+    if (::IsZoomed(*this) != bZoomed)
+    {
+        auto pMaxBtn = m_paintMgr.FindControl(_T("maxbtn"));
+        auto pRestoreBtn = m_paintMgr.FindControl(_T("restorebtn"));
+        if (pMaxBtn)
         {
-            if (!bZoomed) {
-                CControlUI* pControl = static_cast<CControlUI*>(m_paintMgr.FindControl(_T("maxbtn")));
-                if (pControl) {
-                    pControl->SetVisible(false);
-                }
-                pControl = static_cast<CControlUI*>(m_paintMgr.FindControl(_T("restorebtn")));
-                if (pControl) {
-                    pControl->SetVisible(true);
-                }
-            }
-            else {
-                CControlUI* pControl = static_cast<CControlUI*>(m_paintMgr.FindControl(_T("maxbtn")));
-                if (pControl) {
-                    pControl->SetVisible(true);
-                }
-                pControl = static_cast<CControlUI*>(m_paintMgr.FindControl(_T("restorebtn")));
-                if (pControl) {
-                    pControl->SetVisible(false);
-                }
-            }
+            pMaxBtn->SetVisible(bZoomed);
         }
-#    endif
+        if (pRestoreBtn)
+        {
+            pRestoreBtn->SetVisible(!bZoomed);
+        }
+    }
+    #else 
+    LRESULT lRes = CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 #endif
+
+    return lRes;
 }
 
 LRESULT WindowImplBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
