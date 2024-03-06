@@ -65,7 +65,7 @@ void CEventSource::operator+=(const CDelegateBase& d)
     m_aDelegates.Add(d.Copy());
 }
 
-void CEventSource::operator+=(FnType pFn)
+void CEventSource::operator+=(Fn pFn)
 {
     (*this) += MakeDelegate(pFn);
 }
@@ -83,7 +83,7 @@ void CEventSource::operator-=(const CDelegateBase& d)
         }
     }
 }
-void CEventSource::operator-=(FnType pFn)
+void CEventSource::operator-=(Fn pFn)
 {
     (*this) -= MakeDelegate(pFn);
 }

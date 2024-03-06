@@ -29,7 +29,7 @@ private:
 
 class CDelegateStatic : public CDelegateBase
 {
-    typedef bool (*Fn)(void*);
+    using Fn =  bool (*)(void*);
 
 public:
     CDelegateStatic(Fn pFn)
@@ -58,7 +58,7 @@ protected:
 template<class O, class T>
 class CDelegate : public CDelegateBase
 {
-    typedef bool (T::*Fn)(void*);
+    using Fn = bool (T::*)(void*);
 
 public:
     CDelegate(O* pObj, Fn pFn)
@@ -104,15 +104,14 @@ inline CDelegateStatic MakeDelegate(bool (*pFn)(void*))
 
 class UILIB_API CEventSource
 {
-    typedef bool (*FnType)(void*);
-
+    using Fn = bool (*)(void*);
 public:
     ~CEventSource();
     operator bool();
     void operator+=(const CDelegateBase& d);
-    void operator+=(FnType pFn);
+    void operator+=(Fn pFn);
     void operator-=(const CDelegateBase& d);
-    void operator-=(FnType pFn);
+    void operator-=(Fn pFn);
     bool operator()(void* param);
     void Clear();
 
