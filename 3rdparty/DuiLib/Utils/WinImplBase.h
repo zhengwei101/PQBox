@@ -75,7 +75,7 @@ public:
 
     virtual LRESULT HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
     virtual LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-    virtual LONG GetStyle();
+    virtual LONG_PTR GetStyle();
 };
 } // namespace DuiLib
 

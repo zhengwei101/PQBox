@@ -41,11 +41,11 @@ public:
 private:
     struct XMLELEMENT
     {
-        ULONG iStart;
-        ULONG iChild;
-        ULONG iNext;
-        ULONG iParent;
-        ULONG iData;
+        ULONG_PTR iStart;
+        ULONG_PTR iChild;
+        ULONG_PTR iNext;
+        ULONG_PTR iParent;
+        ULONG_PTR iData;
     };
 
     LPTSTR m_pstrXML = nullptr;
@@ -58,7 +58,7 @@ private:
 
 private:
     bool _Parse();
-    bool _Parse(LPTSTR& pstrText, ULONG iParent);
+    bool _Parse(LPTSTR& pstrText, ULONG_PTR iParent);
     XMLELEMENT* _ReserveElement();
     inline void _SkipWhitespace(LPTSTR& pstr) const;
     inline void _SkipWhitespace(LPCTSTR& pstr) const;
@@ -76,7 +76,7 @@ class UILIB_API CMarkupNode
 
 private:
     CMarkupNode();
-    CMarkupNode(CMarkup* pOwner, int iPos);
+    CMarkupNode(CMarkup* pOwner, ULONG_PTR iPos);
 
 public:
     bool IsValid() const;
@@ -110,11 +110,11 @@ private:
 
     struct XMLATTRIBUTE
     {
-        ULONG iName;
-        ULONG iValue;
+        LONG_PTR iName;
+        LONG_PTR iValue;
     };
 
-    int m_iPos = 0;
+    ULONG_PTR m_iPos = 0;
     int m_nAttributes = 0;
     XMLATTRIBUTE m_aAttributes[MAX_XML_ATTRIBUTES];
     CMarkup* m_pOwner = nullptr;

@@ -322,9 +322,9 @@ LRESULT WindowImplBase::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BO
 LRESULT WindowImplBase::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     // 调整窗口样式
-    LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
+    LONG_PTR styleValue = ::GetWindowLongPtr(*this, GWL_STYLE);
     styleValue &= ~WS_CAPTION;
-    ::SetWindowLong(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+    ::SetWindowLongPtr(*this, GWL_STYLE, styleValue | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 
     // 关联UI管理器
     m_paintMgr.Init(m_hWnd, GetManagerName());
@@ -519,9 +519,9 @@ WindowImplBase::OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
     return 0;
 }
 
-LONG WindowImplBase::GetStyle()
+LONG_PTR WindowImplBase::GetStyle()
 {
-    LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
+    LONG_PTR styleValue = ::GetWindowLongPtr(*this, GWL_STYLE);
     styleValue &= ~WS_CAPTION;
 
     return styleValue;

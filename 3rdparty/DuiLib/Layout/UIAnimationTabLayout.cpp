@@ -99,7 +99,7 @@ void CAnimationTabLayoutUI::DoEvent(TEventUI& event)
 {
     if (event.Type == UIEVENT_TIMER)
     {
-        OnTimer(event.wParam);
+        OnTimer((int)event.wParam);
     }
     __super::DoEvent(event);
 }

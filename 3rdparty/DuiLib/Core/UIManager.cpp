@@ -867,14 +867,14 @@ void CPaintManagerUI::SetOpacity(BYTE nOpacity)
                 return;
         }
 
-        DWORD dwStyle = ::GetWindowLong(m_hWndPaint, GWL_EXSTYLE);
-        DWORD dwNewStyle = dwStyle;
+        LONG_PTR dwStyle = ::GetWindowLongPtr(m_hWndPaint, GWL_EXSTYLE);
+        LONG_PTR dwNewStyle = dwStyle;
         if (nOpacity >= 0 && nOpacity < 256)
             dwNewStyle |= WS_EX_LAYERED;
         else
             dwNewStyle &= ~WS_EX_LAYERED;
         if (dwStyle != dwNewStyle)
-            ::SetWindowLong(m_hWndPaint, GWL_EXSTYLE, dwNewStyle);
+            ::SetWindowLongPtr(m_hWndPaint, GWL_EXSTYLE, dwNewStyle);
         fSetLayeredWindowAttributes(m_hWndPaint, 0, nOpacity, LWA_ALPHA);
     }
 }
@@ -1313,10 +1313,10 @@ bool CPaintManagerUI::MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, LR
 
             if (m_bLayered)
             {
-                DWORD dwExStyle = ::GetWindowLong(m_hWndPaint, GWL_EXSTYLE);
-                DWORD dwNewExStyle = dwExStyle | WS_EX_LAYERED;
+                LONG_PTR dwExStyle = ::GetWindowLongPtr(m_hWndPaint, GWL_EXSTYLE);
+                LONG_PTR dwNewExStyle = dwExStyle | WS_EX_LAYERED;
                 if (dwExStyle != dwNewExStyle)
-                    ::SetWindowLong(m_hWndPaint, GWL_EXSTYLE, dwNewExStyle);
+                    ::SetWindowLongPtr(m_hWndPaint, GWL_EXSTYLE, dwNewExStyle);
                 m_bOffscreenPaint = true;
                 UnionRect(&rcPaint, &rcPaint, &m_rcLayeredUpdate);
                 if (rcPaint.right > rcClient.right)

@@ -9,7 +9,7 @@ CMarkupNode::CMarkupNode()
 {
 }
 
-CMarkupNode::CMarkupNode(CMarkup* pOwner, int iPos)
+CMarkupNode::CMarkupNode(CMarkup* pOwner, ULONG_PTR iPos)
     : m_pOwner(pOwner)
     , m_iPos(iPos)
 {
@@ -20,7 +20,7 @@ CMarkupNode CMarkupNode::GetSibling()
     if (!m_pOwner)
         return CMarkupNode();
 
-    ULONG iPos = m_pOwner->m_pElements[m_iPos].iNext;
+    ULONG_PTR iPos = m_pOwner->m_pElements[m_iPos].iNext;
     if (iPos == 0)
         return CMarkupNode();
 
@@ -32,7 +32,7 @@ bool CMarkupNode::HasSiblings() const
     if (!m_pOwner)
         return false;
 
-    ULONG iPos = m_pOwner->m_pElements[m_iPos].iNext;
+    ULONG_PTR iPos = m_pOwner->m_pElements[m_iPos].iNext;
 
     return iPos > 0;
 }
@@ -42,7 +42,7 @@ CMarkupNode CMarkupNode::GetChild()
     if (!m_pOwner)
         return CMarkupNode();
 
-    ULONG iPos = m_pOwner->m_pElements[m_iPos].iChild;
+    ULONG_PTR iPos = m_pOwner->m_pElements[m_iPos].iChild;
 
     if (iPos == 0)
         return CMarkupNode();
@@ -55,7 +55,7 @@ CMarkupNode CMarkupNode::GetChild(LPCTSTR pstrName)
     if (!m_pOwner)
         return CMarkupNode();
 
-    ULONG iPos = m_pOwner->m_pElements[m_iPos].iChild;
+    ULONG_PTR iPos = m_pOwner->m_pElements[m_iPos].iChild;
 
     while (iPos != 0)
     {
@@ -83,7 +83,7 @@ CMarkupNode CMarkupNode::GetParent()
     if (!m_pOwner)
         return CMarkupNode();
 
-    ULONG iPos = m_pOwner->m_pElements[m_iPos].iParent;
+    ULONG_PTR iPos = m_pOwner->m_pElements[m_iPos].iParent;
     if (iPos == 0)
         return CMarkupNode();
 
@@ -499,10 +499,10 @@ bool CMarkup::_Parse()
     return _Parse(pstrXML, 0);
 }
 
-bool CMarkup::_Parse(LPTSTR& pstrText, ULONG iParent)
+bool CMarkup::_Parse(LPTSTR& pstrText, ULONG_PTR iParent)
 {
     _SkipWhitespace(pstrText);
-    ULONG iPrevious = 0;
+    ULONG_PTR iPrevious = 0;
     for (;;)
     {
         if (*pstrText == _T('\0') && iParent <= 1)
@@ -542,7 +542,7 @@ bool CMarkup::_Parse(LPTSTR& pstrText, ULONG iParent)
 
         // Fill out element structure
         XMLELEMENT* pEl = _ReserveElement();
-        ULONG iPos = pEl - m_pElements;
+        ULONG_PTR iPos = pEl - m_pElements;
         pEl->iStart = pstrText - m_pstrXML;
         pEl->iParent = iParent;
         pEl->iNext = pEl->iChild = 0;

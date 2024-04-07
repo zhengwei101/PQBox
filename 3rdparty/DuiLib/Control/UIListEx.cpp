@@ -153,7 +153,7 @@ void CListExUI::Notify(TNotifyUI& msg)
             if (pLItem && pLItem == msg.pSender)
             {
                 OnListItemChecked(
-                    LOWORD(msg.wParam), HIWORD(msg.wParam), msg.lParam);
+                    LOWORD(msg.wParam), HIWORD(msg.wParam), (BOOL)msg.lParam);
                 break;
             }
         }
@@ -187,7 +187,7 @@ void CListExUI::Notify(TNotifyUI& msg)
              m_nRow >= 0 && m_nColum >= 0)
     {
         //int iCurSel = msg.wParam;
-        int iOldSel = msg.lParam;
+        int iOldSel = (int)msg.lParam;
 
         if (_tcsicmp(msg.sType, DUI_MSGTYPE_SETFOCUS) == 0) {}
         else if (_tcsicmp(msg.sType, DUI_MSGTYPE_KILLFOCUS) == 0) {}

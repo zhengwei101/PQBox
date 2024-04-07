@@ -38,7 +38,7 @@ void CFadeButtonUI::DoEvent(TEventUI& event)
 {
     if (event.Type == UIEVENT_TIMER)
     {
-        OnTimer(event.wParam);
+        OnTimer(static_cast<int>(event.wParam));
     }
     else if (IsEnabled())
     {

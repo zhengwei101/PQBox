@@ -180,7 +180,7 @@ void CHotKeyWnd::SetHotKey(WORD wVirtualKeyCode, WORD wModifiers)
 DWORD CHotKeyWnd::GetHotKey() const
 {
     ASSERT(::IsWindow(m_hWnd));
-    return (::SendMessage(m_hWnd, HKM_GETHOTKEY, 0, 0L));
+    return (DWORD)::SendMessage(m_hWnd, HKM_GETHOTKEY, 0, 0L);
 }
 
 void CHotKeyWnd::GetHotKey(WORD& wVirtualKeyCode, WORD& wModifiers) const

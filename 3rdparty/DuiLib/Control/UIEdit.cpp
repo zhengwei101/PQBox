@@ -80,9 +80,9 @@ void CEditWnd::Init(CEditUI* pOwner)
     Edit_SetReadOnly(m_hWnd, m_pOwner->IsReadOnly() == true);
 
     // Styls
-    LONG styleValue = ::GetWindowLong(m_hWnd, GWL_STYLE);
+    LONG_PTR styleValue = ::GetWindowLongPtr(m_hWnd, GWL_STYLE);
     styleValue |= pOwner->GetWindowStyls();
-    ::SetWindowLong(GetHWND(), GWL_STYLE, styleValue);
+    ::SetWindowLongPtr(GetHWND(), GWL_STYLE, styleValue);
     // Styls
     ::ShowWindow(m_hWnd, SW_SHOWNOACTIVATE);
     ::SetFocus(m_hWnd);
@@ -515,9 +515,9 @@ void CEditUI::SetPasswordMode(bool bPasswordMode)
     Invalidate();
     if (m_pWindow)
     {
-        LONG styleValue = ::GetWindowLong(*m_pWindow, GWL_STYLE);
+        LONG_PTR styleValue = ::GetWindowLongPtr(*m_pWindow, GWL_STYLE);
         bPasswordMode ? styleValue |= ES_PASSWORD : styleValue &= ~ES_PASSWORD;
-        ::SetWindowLong(*m_pWindow, GWL_STYLE, styleValue);
+        ::SetWindowLongPtr(*m_pWindow, GWL_STYLE, styleValue);
     }
 }
 
