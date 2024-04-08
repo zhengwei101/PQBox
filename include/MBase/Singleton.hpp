@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef __SINGLETON_H__
 #define __SINGLETON_H__
