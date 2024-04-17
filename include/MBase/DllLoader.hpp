@@ -24,20 +24,16 @@
  * //Demo3
  * class Advapi32
  * {
- *     Advapi32()
- *         : m_dll(L"Advapi32.dll")
- *     {
- *         getUserName = advapi32["GetUserNameW"];
- *     }
- *     decltype(GetUserNameW)* getUserName;
- * private: 
- *     MBase::DllLoader m_dll;
+ *     MBase::DllLoader dll_{L"Advapi32.dll"};
+ * public:
+ *     decltype(GetUserNameW)* getUserName = dll_["GetUserNameW"];
  * };
  * 
- * Advapi32 adv;
- * #define INFO_BUFFER_SIZE 32767
+ * #define INFO_BUFFER_SIZE 256
  * TCHAR infoBuf[INFO_BUFFER_SIZE] = {};
  * DWORD bufCharCount = INFO_BUFFER_SIZE;
+ * 
+ * Advapi32 adv;
  * adv.getUserName(infoBuf, &bufCharCount);
  * wprintf(L"Username:  %s\n", infoBuf);
  * --------------------------------------------------------
@@ -52,44 +48,44 @@ class ProcPtr
 {
 public:
     explicit ProcPtr(FARPROC ptr)
-        : m_ptr(ptr)
+        : ptr_(ptr)
     {
     }
 
     template <typename T, typename = std::enable_if_t<std::is_function_v<T>>>
     operator T*() const
     {
-        return reinterpret_cast<T*>(m_ptr);
+        return reinterpret_cast<T*>(ptr_);
     }
 
 private:
-    FARPROC m_ptr;
+    FARPROC ptr_;
 };
 
 class DllLoader
 {
 public:
     explicit DllLoader(LPCTSTR filename)
-        : m_hModule(LoadLibraryEx(filename, NULL, NULL))
+        : hModule_(LoadLibraryEx(filename, NULL, NULL))
     {
     }
 
-    ~DllLoader() { FreeLibrary(m_hModule); }
+    ~DllLoader() { FreeLibrary(hModule_); }
 
-    HMODULE GetHModule() { return m_hModule; }
+    HMODULE GetHModule() { return hModule_; }
 
     ProcPtr operator[](LPCSTR proc_name) const
     {
-        return ProcPtr(GetProcAddress(m_hModule, proc_name));
+        return ProcPtr(GetProcAddress(hModule_, proc_name));
     }
 
     ProcPtr GetInterface(LPCSTR proc_name) const
     {
-        return ProcPtr(GetProcAddress(m_hModule, proc_name));
+        return ProcPtr(GetProcAddress(hModule_, proc_name));
     }
 
 private:
-    HMODULE m_hModule = nullptr;
+    HMODULE hModule_ = nullptr;
 };
 
 } // namespace MBase
