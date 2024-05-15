@@ -3,8 +3,8 @@
 #ifndef __NONCOPYABLE_H__
 #define __NONCOPYABLE_H__
 
-namespace MBase
-{
+namespace MBase {
+
 class NonCopyable
 {
 public:
