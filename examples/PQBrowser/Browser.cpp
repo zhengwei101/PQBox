@@ -19,7 +19,7 @@
 #include "BrowserDlgManager.h"
 using namespace Browser;
 
-#include "MBase/file_tools.hpp"
+#include "MBase/File.hpp"
 using namespace MBase;
 
 
@@ -226,7 +226,7 @@ static int RunMain(HINSTANCE hInstance, int nCmdShow)
     // 初始化资源
 #ifdef _DEBUG
     CPaintManagerUI::SetResourceType(UILIB_RESTYPE::FILE);
-    std::wstring uiPath = FileTools::GetAppDirectory(hInstance);
+    std::wstring uiPath = MFile::GetAppDirectory(hInstance);
     uiPath = std::format(L"{}\\uires\\browser\\", uiPath);
     CPaintManagerUI::SetResourcePath(uiPath.c_str());
 #else
