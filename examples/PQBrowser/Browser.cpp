@@ -22,8 +22,6 @@ using namespace Browser;
 #include "MBase/File.hpp"
 using namespace MBase;
 
-
-
 static int CheckDelayException(int exception_value)
 {
     if (exception_value == VcppException(ERROR_SEVERITY_ERROR, ERROR_MOD_NOT_FOUND) ||
@@ -82,7 +80,6 @@ static bool LoadZipResource()
 static int RunMain(HINSTANCE hInstance, int nCmdShow)
 {
     // 在项目属性->连接器->输入，延迟加载 libcef.dll
-
     TCHAR szCEFDllPath[MAX_PATH] = {0};
     TCHAR drive[_MAX_DRIVE] = {0};
     TCHAR dir[_MAX_DIR] = {0};
@@ -97,6 +94,14 @@ static int RunMain(HINSTANCE hInstance, int nCmdShow)
 
     std::wstring cefDir{dir};
     cefDir += L"cef\\";
+
+    //日志路径
+    std::wstring logDir{dir};
+    logDir += L"logs\\";
+
+    TCHAR szLogPath[_MAX_PATH] = {0};
+    _tmakepath_s(szLogPath, _MAX_PATH, drive, logDir.c_str(), L"browser", L".log");
+
 
     //This is required because it seems some of CEF itself loads DLL using relative paths
     if (!SetDllDirectory(cefDir.c_str()))
@@ -134,7 +139,7 @@ static int RunMain(HINSTANCE hInstance, int nCmdShow)
         return false;
     }
 
-        // Enable High-DPI support on Windows 7 or newer.
+    // Enable High-DPI support on Windows 7 or newer.
     CefEnableHighDPISupport();
 
     void* sandbox_info = nullptr;

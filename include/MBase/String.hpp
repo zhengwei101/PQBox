@@ -475,5 +475,18 @@ public:
             s.begin(), s.end(), s.begin(), [](unsigned char c) { return std::tolower(c); });
         return A2W(s);
     }
+
+    static std::wstring VectorToString(const std::vector<std::wstring>& V,
+                                       const std::wstring& separator)
+    {
+        std::wstring result;
+        for (const auto& v : V) {
+            result += v;
+            if (v != V.back()) {
+                result += separator;
+            }
+        }
+        return result;
+    }
 };
 } // namespace MBase
