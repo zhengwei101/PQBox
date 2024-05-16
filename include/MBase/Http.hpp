@@ -131,7 +131,7 @@ public:
         }
 
         file.close();
-
+         
         fs::rename(strLocalFileTemp, localPath, ec);
         if (!ec) {
             return true;
