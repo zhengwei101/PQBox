@@ -15,7 +15,7 @@
 #define HEADER_PUGICONFIG_HPP
 
 // Uncomment this to enable wchar_t mode
-// #define PUGIXML_WCHAR_MODE
+#define PUGIXML_WCHAR_MODE
 
 // Uncomment this to enable compact mode
 // #define PUGIXML_COMPACT
@@ -44,10 +44,10 @@
 // #define PUGIXML_XPATH_DEPTH_LIMIT 1024
 
 // Uncomment this to switch to header-only version
-// #define PUGIXML_HEADER_ONLY
+#define PUGIXML_HEADER_ONLY
 
 // Uncomment this to enable long long support
-// #define PUGIXML_HAS_LONG_LONG
+#define PUGIXML_HAS_LONG_LONG
 
 #endif
 
