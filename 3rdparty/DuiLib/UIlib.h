@@ -67,6 +67,7 @@
 #include "Utils/DragDropImpl.h"
 #include "Utils/TrayIcon.h"
 #include "Utils/DPI.h"
+#include "Utils/observer_impl_base.hpp"
 
 #include "Core/UIDefine.h"
 #include "Core/UIResourceManager.h"
