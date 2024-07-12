@@ -3,9 +3,9 @@
 #ifndef THREAD_POOL_H_
 #define THREAD_POOL_H_
 
-#include <vector>
-#include <queue>
 #include <atomic>
+#include <queue>
+#include <vector>
 #include <future>
 #include <stdexcept>
 
@@ -88,10 +88,11 @@ public:
                         std::unique_lock<std::mutex> lock{mutex_};
 
                         // 等待条件成立
+                        // 只有在tasks_不为空的情况下才会返回true,防止虚假唤醒
                         task_cv_.wait(
                             lock, [this] { return stop_ || !tasks_.empty(); }); // wait 直到有 task
 
-                        // 如果线程池停止或者任务队列为空，结束返回
+                        // 如果线程池停止且任务队列为空，结束返回
                         // exit if the pool is stopped
                         if (stop_ && tasks_.empty()) {
                             return;
