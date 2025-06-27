@@ -93,9 +93,11 @@ AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
 
 # This option is deprecated and is retained for backwards compatibility.
+# 总是在定义返回类型后换行(deprecated)
 #AlwaysBreakAfterDefinitionReturnType: None
 
-# 函数声明返回类型后是否换行(None 自动，All全部，TopLevel)
+# 函数声明返回类型后是否换行(None 自动，All全部，TopLevel顶级函数，不包括在类中的函数)
+# AllDefinitions(所有的定义，不包括声明), TopLevelDefinitions(所有的顶级函数的定义)
 #AlwaysBreakAfterReturnType: None
 
 # 总是在多行string字面量前换行
@@ -110,6 +112,7 @@ AlwaysBreakBeforeMultilineStrings: false
 #  - __capability
 
 # 函数调用时的参数(Arguments)是否放置于一行, false不放置, true强制一个调用参数一行
+# false表示所有形参要么都在同一行，要么都各自一行
 BinPackArguments: false
 
 # 函数定义时的参数(Parameters)是否放置于一行
@@ -156,6 +159,7 @@ BraceWrapping:
   # SplitEmptyNamespace: true
 
 # 二元操作符前是否换行, 建议为None
+# None(在操作符后换行), NonAssignment(在非赋值的操作符前换行), All(在操作符前换行)
 BreakBeforeBinaryOperators: All
 
 # 概念声明前是否换行, 建议Always
@@ -305,6 +309,7 @@ IndentWrappedFunctionNames: true
 #JavaScriptQuotes: Leave
 #JavaScriptWrapImports: true
 
+# 保留在块开始处的空行
 #KeepEmptyLinesAtTheStartOfBlocks: false
 
 #LambdaBodyIndentation: Signature
@@ -314,7 +319,7 @@ IndentWrappedFunctionNames: true
 # 宏结束的正则, 不使用
 #MacroBlockEnd:   ''
 
-# 空行保持, 建议为1
+# 连续空行的最大数量, 建议为1
 #MaxEmptyLinesToKeep: 1
 
 # Namespace内的对齐, 直接使用None即可, 即所有namespace内(包括内嵌的)都不indent
